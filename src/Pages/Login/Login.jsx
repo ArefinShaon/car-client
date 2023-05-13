@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg'
 import { useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
@@ -6,6 +6,9 @@ import { AuthContext } from '../../providers/AuthProvider';
 const Login = () => {
 
     const { signIn } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const handleLogin = event => {
         event.preventDefault();
@@ -17,9 +20,12 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                form.reset();
+                navigate(from,{replace:true});
             })
             .catch(error => console.log(error));
     }
+    
 
     return (
         <div className="hero min-h-screen bg-base-200">
